@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -17,8 +17,6 @@ export default function Schedule(){
         });
 
     }, []);
-
-    console.log(movie)
 
     if(movie === null){
         return "";
@@ -40,14 +38,14 @@ export default function Schedule(){
 
 function Session(props){
 
-    const { date, weekday, showtimes } = props;
+    const { date, weekday, showtimes} = props;
     
     return (
         <>
             <Date>{weekday} - {date}</Date>
             <HourContainer>
                 {showtimes.map((render, index) => 
-                    (<MovieHour hour={render.name} key={index} />)
+                    (<MovieHour hour={render.name} id={render.id} key={index} />)
                 )}
             </HourContainer>
         </>
@@ -57,15 +55,19 @@ function Session(props){
 
 function MovieHour(props){
 
+    const {hour, id} = props;
+
     return (
-        <Hour>{props.hour}</Hour>
+        <Link to={'/assentos/' + id}>
+            <Hour>{hour}</Hour>
+        </Link>
     );
 
 }
 
 function Footer(props){
 
-    const { image, alt, title } = props;
+    const { image, title } = props;
 
     return (
         <FooterInfo>
@@ -111,6 +113,7 @@ const Hour = styled.div `
     justify-content: center;
     border-radius: 5px;
     margin-right: 10px;
+    cursor: pointer;
 `
 
 const FooterInfo = styled.div `
@@ -120,7 +123,7 @@ const FooterInfo = styled.div `
     display: flex;
     align-items: center;
     font-size: 26px;
-    border: 1px #9EADBA;
+    border: 1px solid #9EADBA;
     position: fixed;
     bottom: 0px;
     left: 0px;
