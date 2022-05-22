@@ -17,8 +17,6 @@ export default function MovieChoice(){
 
     }, []);
 
-    console.log(movies);
-
     if(movies === null) {
         return "";
     }
@@ -80,9 +78,10 @@ img {
 `
 
 const Select = styled.div `
-    height: 70px;
+    height: 110px;
     font-size: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 70px;
 `

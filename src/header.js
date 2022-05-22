@@ -11,6 +11,7 @@ export default function Header(){
 }
 
 const Title = styled.h1 `
+    width: 100%;
     height: 70px;
     background-color: #C3CFD9;
     color: #E8833A;
@@ -18,4 +19,7 @@ const Title = styled.h1 `
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
 `
