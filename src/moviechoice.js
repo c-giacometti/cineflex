@@ -16,6 +16,8 @@ export default function MovieChoice(){
             setMovies(response.data);
         });
 
+        promise.catch(treatError);
+
     }, []);
 
     if(movies === null){
@@ -51,6 +53,10 @@ function Movie(props){
       </ImageBorder>
     );
 
+}
+
+function treatError(){
+    alert('Ocorreu um erro, tente novamente em instantes');
 }
 
 const Image = styled.div `

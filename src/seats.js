@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-import loading from './assets/loading.gif'
+import loading from "./assets/loading.gif";
+import Footer from "./footer";
 
 export default function Seats(){
 
@@ -46,7 +47,7 @@ export default function Seats(){
             <Inputs setName={setName} setCPF={setCPF} />
             <Button name={name} CPF={CPF} seatsArray={seatsArray} seatNumbers={seatNumbers} movie={info.movie.title} 
             day={info.day.date} hour={info.name} />
-            <Footer image={info.movie.posterURL} title={info.movie.title} day={info.day} hour={info.name} />       
+            <Footer image={info.movie.posterURL} title={info.movie.title} day={info.day.weekday + ' -'} hour={info.name} />       
         </Container>
     );
 
@@ -159,24 +160,6 @@ function Button(props){
 
 }
 
-function Footer(props){
-
-    const { image, title, day, hour } = props;
-
-    return (
-        <FooterInfo>
-            <div>
-                <img src={image} alt={title} />
-            </div>
-            <span>
-                <span>{title}</span>
-                <span>{day.weekday} - {hour}</span>
-            </span>
-        </FooterInfo>
-    );
-    
-}
-
 function treatError(){
     alert('Ocorreu um erro, tente novamente em instantes');
 }
@@ -283,42 +266,4 @@ const BookSeats = styled.button `
     color: white;
     cursor: pointer;
     margin-bottom: 140px;
-`
-
-const FooterInfo = styled.div `
-    width: 100%;
-    height: 120px;
-    background-color: #DFE6ED;
-    display: flex;
-    align-items: center;
-    font-size: 22px;
-    border: 1px solid #9EADBA;
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-
-    div {
-        width: 65px;
-        height: 90px;
-        background-color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0px 10px 0px 10px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 2px;
-    }
-
-    img {
-        width: 50px;
-        height: 70px;
-    }
-
-    span {
-        display: flex;
-        flex-direction: column;
-        color: #293845;
-        margin-bottom: 5px;
-    }
-
 `
