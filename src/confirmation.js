@@ -119,5 +119,5 @@ const Home = styled.button `
     font-size: 20px;
     color: white;
     cursor: pointer;
-    margin-bottom: 140px;
+    margin-top: 60px;
 `

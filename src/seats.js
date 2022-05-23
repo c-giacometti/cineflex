@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate} from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -121,8 +121,20 @@ function Button(props){
 
     function postData(){
 
-        navigate('/sucesso', {state:{name, CPF, seatNumbers, movie, day, hour}});
+        const objectPost = {
+            ids: seatsArray,
+            name: name,
+            cpf: CPF
+        }
 
+        const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many', objectPost);
+
+        promise.then(goToSucess);
+
+    }
+
+    function goToSucess(){
+        navigate('/sucesso', {state:{name, CPF, seatNumbers, movie, day, hour}});
     }
 
     return (
