@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -10,6 +10,8 @@ export default function Seats(){
     const [info, setInfo] = useState(null);
     const [name, setName] = useState("");
     const [CPF, setCPF] = useState("");
+    const [seatsArray, setSeatsArray] = useState([]);
+    const [seatNumbers, setSeatNumbers] = useState([]);
 
     useEffect(() => {
         const promise = axios.get(API);
@@ -28,12 +30,14 @@ export default function Seats(){
             <Select>Selecione o(s) assento(s)</Select>
             <SeatChart>
                 {(info.seats).map((render, index) => 
-                    (<Seat number={render.name} id={render.id} isAvailable={render.isAvailable} key={index} />)
+                    (<Seat number={render.name} id={render.id} isAvailable={render.isAvailable} seatsArray={seatsArray} 
+                    setSeatsArray={setSeatsArray} seatNumbers={seatNumbers} setSeatNumbers={setSeatNumbers} key={index} />)
                 )}
             </SeatChart>
             <SeatInfo />
             <Inputs setName={setName} setCPF={setCPF} />
-            <Button name={name} CPF={CPF} />
+            <Button name={name} CPF={CPF} seatsArray={seatsArray} seatNumbers={seatNumbers} movie={info.movie.title} 
+            day={info.day.date} hour={info.name} />
             <Footer image={info.movie.posterURL} title={info.movie.title} day={info.day} hour={info.name} />       
         </Container>
     );
@@ -42,9 +46,8 @@ export default function Seats(){
 
 function Seat(props){
 
-    const {number, id, isAvailable} = props;
+    const {number, id, isAvailable, seatsArray, setSeatsArray, seatNumbers, setSeatNumbers} = props;
     const [isSelected, setIsSelected] = useState(false);
-    const [seatsArray, setSeatsArray] = useState([]);
 
     function checkSelect(){
 
@@ -54,13 +57,16 @@ function Seat(props){
 
         else if(isSelected === true){
             setIsSelected(false);
+            seatsArray.splice(seatsArray.indexOf(id), 1);
+            seatNumbers.splice(seatNumbers.indexOf(number), 1);
         }
 
         else if(isSelected === false){
-            let newArray = [...seatsArray, id];
-            setSeatsArray(newArray);
-            console.log(seatsArray, newArray);
             setIsSelected(true);
+            const newSeatArray = [...seatsArray, id];
+            setSeatsArray(newSeatArray);
+            const newSeatNumber = [...seatNumbers, number];
+            setSeatNumbers(newSeatNumber);
         }
     }
 
@@ -110,16 +116,17 @@ function Inputs(props){
 
 function Button(props){
 
-    const { name, CPF } = props;
+    const { name, CPF, seatsArray, seatNumbers, movie, day, hour } = props;
+    const navigate = useNavigate();
 
     function postData(){
-        console.log(name, CPF);
+
+        navigate('/sucesso', {state:{name, CPF, seatNumbers, movie, day, hour}});
+
     }
 
     return (
-        <Link to='/sucesso'>
-            <BookSeats onClick={postData}>Reservar assento(s)</BookSeats>
-        </Link>
+        <BookSeats onClick={postData}>Reservar assento(s)</BookSeats>
     );
 
 }
