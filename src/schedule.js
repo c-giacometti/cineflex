@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import loading from './assets/loading.gif'
 
 export default function Schedule(){
 
@@ -16,10 +17,14 @@ export default function Schedule(){
             setMovie(response.data);
         });
 
-    }, []);
+    }, [API]);
 
     if(movie === null){
-        return "";
+        return (
+            <Image>
+                <img src={loading} alt='loading' />
+            </Image> 
+        );
     }
 
     return (
@@ -78,10 +83,23 @@ function Footer(props){
     
 }
 
+
+const Image = styled.div `
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        height: 100px;
+    }
+`
+
 const Select = styled.div `
     width: 100%;
     height: 110px;
     font-size: 24px;
+    color: #293845;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,6 +132,7 @@ const Hour = styled.div `
     border-radius: 5px;
     margin-right: 10px;
     cursor: pointer;
+    text-decoration: underline #E8833A;
 `
 
 const FooterInfo = styled.div `

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import loading from './assets/loading.gif'
 
 export default function Seats(){
 
@@ -19,10 +20,17 @@ export default function Seats(){
         promise.then(response => 
             {setInfo(response.data);}
         );
-    }, []);
+
+        promise.catch(treatError);
+
+    }, [API]);
 
     if(info === null){
-        return ("");
+        return (
+            <Image>
+                <img src={loading} alt='loading' />
+            </Image> 
+        );
     }
 
     return (
@@ -121,15 +129,23 @@ function Button(props){
 
     function postData(){
 
-        const objectPost = {
-            ids: seatsArray,
-            name: name,
-            cpf: CPF
+        if(name.length > 0 && CPF.length === 11 && seatsArray.length > 0){
+
+            const objectPost = {
+                ids: seatsArray,
+                name: name,
+                cpf: CPF
+            }
+    
+            const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many', objectPost);
+    
+            promise.then(goToSucess);
+            promise.catch(treatError);
         }
 
-        const promise = axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many', objectPost);
-
-        promise.then(goToSucess);
+        else {
+            alert('Selecione um assento e informe dados válidos');
+        }
 
     }
 
@@ -161,6 +177,21 @@ function Footer(props){
     
 }
 
+function treatError(){
+    alert('Ocorreu um erro, tente novamente em instantes');
+}
+
+const Image = styled.div `
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        height: 100px;
+    }
+`
+
 const Container = styled.div `
     display: flex;
     flex-direction: column;
@@ -172,6 +203,7 @@ const Select = styled.div `
     width: 100%;
     height: 110px;
     font-size: 24px;
+    color: #293845;
     display: flex;
     justify-content: center;
     align-items: center;

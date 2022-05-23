@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import styled from 'styled-components';
+import loading from './assets/loading.gif'
 
 export default function MovieChoice(){
 
@@ -17,8 +18,12 @@ export default function MovieChoice(){
 
     }, []);
 
-    if(movies === null) {
-        return "";
+    if(movies === null){
+        return (
+            <Image>
+                <img src={loading} alt='loading' />
+            </Image>
+        );
     }
 
     return (
@@ -47,6 +52,17 @@ function Movie(props){
     );
 
 }
+
+const Image = styled.div `
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        height: 100px;
+    }
+`
 
 const Container = styled.div `
 
@@ -80,6 +96,7 @@ img {
 const Select = styled.div `
     height: 110px;
     font-size: 24px;
+    color: #293845;
     display: flex;
     justify-content: center;
     align-items: center;
